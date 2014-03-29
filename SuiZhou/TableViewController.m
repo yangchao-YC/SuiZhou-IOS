@@ -281,7 +281,7 @@
         
         ArticleVO *article = [self.articles objectAtIndex:indexPath.row];
         
-         [self Articlecount:article.mark];
+       //  [self Articlecount:article.mark];
         
         WebViewController *webPush = [[WebViewController alloc]init];
         webPush.navText = article.title;
@@ -303,7 +303,7 @@
             BOOL hasSubCategory = [article.zcategory boolValue];
             if (hasSubCategory) {
                 
-                [self count: article.mark];
+             //   [self count: article.mark];
                 
                 NSString *urlString = article.zcategoryurl;
                 NSString *infoID = [NSString stringWithFormat:@"%@-%@",self.infoID,article.title];
@@ -331,7 +331,7 @@
         BOOL hasSubCategory = [article.zcategory boolValue];
         if (hasSubCategory) {
             
-            [self count:article.mark];
+          //  [self count:article.mark];
             
             NSString *urlString = article.zcategoryurl;
             NSString *infoID = [NSString stringWithFormat:@"%@-%@",self.infoID,article.title];
@@ -362,7 +362,7 @@
     BOOL hasSubCategory = [article_.zcategory boolValue];
     if (hasSubCategory) {
         
-        [self count:article_.mark];
+     //   [self count:article_.mark];
         
         NSString *urlString = article_.zcategoryurl;
         NSLog(@"%@",urlString);
@@ -471,6 +471,7 @@
 
 
 //分类统计
+/*
 -(void)count:(NSString *)key
 {
     NSString *URL = [NSString stringWithFormat:@"http://119.36.193.148/suizhou/api/categoryc/%@",key];
@@ -481,11 +482,11 @@
     [self.request setDelegate:self];
     [self.request startAsynchronous];
 }
-
+*/
 //文章统计
 -(void)Articlecount:(NSString *)key
 {
-    NSString *URL = [NSString stringWithFormat:@"http://119.36.193.148/suizhou/api/articlec/%@",key];
+    NSString *URL = [NSString stringWithFormat:@"http://121.199.29.181/demo/joomla/suizhou/index.php?option=com_content&view=category&layout=blog&aid=%@&statez=3",key];
     
     NSURL *dateURL = [[[NSURL alloc]initWithString:URL]autorelease];
     self.request = [MyASIHTTPRequest requestWithURL:dateURL];

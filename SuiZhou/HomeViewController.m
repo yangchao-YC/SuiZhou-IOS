@@ -311,102 +311,42 @@ stype5中状态
  */
 -(IBAction)button:(UIButton *)sender
 {
+    NSString *webYes = @"yes";//区分是否为直接下级至网页页面，yes则是
+    NSString *webNo = @"no";
     
-    NSLog(@"%d",sender.tag);
+    NSLog(@"%ld",(long)sender.tag);
     NSDictionary *dic = [self.articles objectAtIndex:sender.tag];
     
     NSString *Stype = [dic objectForKey:@"stype"];
     NSString *Url = [dic objectForKey:@"zcategoryurl"];
     NSString *Title = [dic objectForKey:@"title"];
     
-    /*
-    NSString *navBarText = sender.titleLabel.text;
-    NSString *webYes = @"yes";//区分是否为直接下级至网页页面，yes则是
-    NSString *webNo = @"no";
-    //以下排序为每页button排序，从1开始到9结束，第二页从21开始至29结束，第三页从31开始至34结束
-    switch (sender.tag) {
-        case 0:
-            [self sitePush];
-            break;
-        case 1:
-            [self TablePush:navBarText:webNo:@"http://121.199.29.181/demo/joomla/suizhou/index.php?option=com_content&view=category&layout=blog&id=86&statez=1" tag:sender.tag];//随州介绍
-            break;
-        case 2:
-            [self TablePush:navBarText:webNo:@"http://121.199.29.181/demo/joomla/suizhou/index.php?option=com_content&view=category&layout=blog&id=95&statez=1" tag:sender.tag];//旅游资源
-            break;
-        case 3:
-            [self TablePush:navBarText:webNo:@"http://121.199.29.181/demo/joomla/suizhou/index.php?option=com_content&view=category&layout=blog&id=107&statez=1" tag:sender.tag];//日版电子报
-            break;
-        case 4:
-            [self TablePush:navBarText:webNo:@"http://121.199.29.181/demo/joomla/suizhou/index.php?option=com_content&view=category&layout=blog&id=112&statez=1" tag:sender.tag];//随州新闻
-            break;
-        case 5:
-            [self TablePush:navBarText:webNo:@"http://121.199.29.181/demo/joomla/suizhou/index.php?option=com_content&view=category&layout=blog&id=114&statez=1" tag:sender.tag];//政务公开
-            break;
-        case 6:
-            [self TablePush:navBarText:webNo:@"http://121.199.29.181/demo/joomla/suizhou/index.php?option=com_content&view=category&layout=blog&id=127&statez=1" tag:sender.tag];//清廉随州
-            break;
-        case 7:
-            [self TablePush:navBarText:webNo:@"http://121.199.29.181/demo/joomla/suizhou/index.php?option=com_content&view=category&layout=blog&id=134&statez=1" tag:sender.tag];//专题视频
-            break;  
-        case 8:
-            [self TablePush:navBarText:webYes:@"http://121.199.29.181/demo/joomla/suizhou/index.php?option=com_content&view=category&layout=blog&id=135&statez=2" tag:sender.tag];//主持人微博
-            break;
-        case 9:
-              [self TablePush:navBarText:webYes:@"http://121.199.29.181/demo/joomla/suizhou/index.php?option=com_content&view=category&layout=blog&id=136&statez=2" tag:sender.tag];//企业风采-特汽
-            break;
-        case 21:
-              [self TablePush:navBarText:webYes:@"http://121.199.29.181/demo/joomla/suizhou/index.php?option=com_content&view=category&layout=blog&id=137&statez=2" tag:sender.tag];//企业风采-工业
-            break;
-        case 22:
-            [self TablePush:navBarText:webYes:@"http://121.199.29.181/demo/joomla/suizhou/index.php?option=com_content&view=category&layout=blog&id=138&statez=2" tag:sender.tag];//节目直播
-            break;
-        case 23:
-            [self siteIntroduction];//关于本应用
-            break;
-        case 24:
-              [self TablePush:navBarText:webYes:@"http://121.199.29.181/demo/joomla/suizhou/index.php?option=com_content&view=category&layout=blog&id=139&statez=2" tag:sender.tag];//企业风采-农业
-            break;
-        case 25:
-            [self TablePush:navBarText:webNo:@"http://121.199.29.181/demo/joomla/suizhou/index.php?option=com_content&view=category&layout=blog&id=140&statez=2" tag:sender.tag];//新闻视频
-            break;
-        case 26:
-            [self TablePush:navBarText:webNo:@"http://121.199.29.181/demo/joomla/suizhou/index.php?option=com_content&view=category&layout=blog&id=141&statez=2" tag:sender.tag];//联通手机业务
-            break;
-        case 27:
-            [self WebPush:navBarText:@"http://mob.10010.com/"];//联通营业厅
-            break;
-        case 28:
-            [self WebPush:navBarText:@"http://www.suizhougjj.cn/"];//公积金帐号
-            break;
-        case 29:
-            [self developPush:navBarText];//社保账户
-            break;
-        case 31:
-            [self developPush:navBarText];//医保帐号
-            break;
-        case 32:
-              [self TablePush:navBarText:webYes:@"http://121.199.29.181/demo/joomla/suizhou/index.php?option=com_content&view=category&layout=blog&id=142&statez=2" tag:sender.tag];//招聘信息
-            break;
-        case 33:
-            [self TablePush:navBarText:webNo:@"http://121.199.29.181/demo/joomla/suizhou/index.php?option=com_content&view=category&layout=blog&id=143&statez=1" tag:sender.tag];//楚天都市报
-            break;
-        case 34:
-            [self developPush:navBarText];//评选活动
-            break;
-        default:
-            [self TablePush:navBarText:webNo:@"http://121.199.29.181/demo/joomla/suizhou/index.php?option=com_content&view=category&layout=blog&id=86&statez=1" tag:sender.tag];
-            break;
+    if ([Stype isEqualToString:@"list"]) {
+        [self TablePush:Title:webNo:Url tag:sender.tag];
     }
-    */
-}
+    if ([Stype isEqualToString:@"weblist"]) {
+        [self TablePush:Title:webYes:Url tag:sender.tag];
+
+    }
+    if ([Stype isEqualToString:@"unfinished"]) {
+        [self developPush:Title];
+    }
+    if ([Stype isEqualToString:@"aboutus"]) {
+        [self siteIntroduction];
+    }
+    if ([Stype isEqualToString:@"weblink"]) {
+        
+        [self WebPush:Title:[dic objectForKey:@"metakey"]];
+    }
+    
+   }
 /*
  以下为页面跳转方法
  */
 //跳转至列表页
--(void)TablePush:(NSString *)navBarText :(NSString *)web :(NSString *)urlString tag:(int)btnTag
+-(void)TablePush:(NSString *)navBarText :(NSString *)web :(NSString *)urlString tag:(long)btnTag
 {
-    NSString *infoID = [NSString stringWithFormat:@"%d-%@",btnTag,navBarText];
+    NSString *infoID = [NSString stringWithFormat:@"%ld-%@",btnTag,navBarText];
     TableViewController *list = [[[TableViewController alloc]initWithNibName:@"TableViewController" bundle:nil infoID:infoID] autorelease];
     list.navText = navBarText;//传递导航条名称
     list.dataURLString = urlString;//传递申请数据地址
