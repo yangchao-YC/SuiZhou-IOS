@@ -102,6 +102,7 @@
 		71946F78180668E700499575 /* HomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 71946F76180668E700499575 /* HomeViewController.xib */; };
 		71946F811806788900499575 /* ListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71946F7F1806788800499575 /* ListViewController.m */; };
 		71946F821806788900499575 /* ListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 71946F801806788800499575 /* ListViewController.xib */; };
+		71B4F53318E6C52500C82E3B /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71B4F53218E6C52500C82E3B /* AdSupport.framework */; };
 		71B950D1180D404700D725CB /* back_an.png in Resources */ = {isa = PBXBuildFile; fileRef = 71B950CD180D404600D725CB /* back_an.png */; };
 		71B950D2180D404700D725CB /* back_an@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 71B950CE180D404600D725CB /* back_an@2x.png */; };
 		71B950D3180D404700D725CB /* set_an.png in Resources */ = {isa = PBXBuildFile; fileRef = 71B950CF180D404600D725CB /* set_an.png */; };
@@ -312,6 +313,7 @@
 		71946F7E1806788800499575 /* ListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListViewController.h; sourceTree = "<group>"; };
 		71946F7F1806788800499575 /* ListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListViewController.m; sourceTree = "<group>"; };
 		71946F801806788800499575 /* ListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ListViewController.xib; sourceTree = "<group>"; };
+		71B4F53218E6C52500C82E3B /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		71B950CD180D404600D725CB /* back_an.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back_an.png; sourceTree = "<group>"; };
 		71B950CE180D404600D725CB /* back_an@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back_an@2x.png"; sourceTree = "<group>"; };
 		71B950CF180D404600D725CB /* set_an.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = set_an.png; sourceTree = "<group>"; };
@@ -400,6 +402,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				71B4F53318E6C52500C82E3B /* AdSupport.framework in Frameworks */,
 				3B01B0CB18462E440003B016 /* libsqlite3.0.dylib in Frameworks */,
 				71EBF1DE182CDDC200C619EE /* MessageUI.framework in Frameworks */,
 				71632D25181639BD001C4F78 /* CFNetwork.framework in Frameworks */,
@@ -619,6 +622,7 @@
 		71946F50180668A000499575 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				71B4F53218E6C52500C82E3B /* AdSupport.framework */,
 				3B01B0CA18462E440003B016 /* libsqlite3.0.dylib */,
 				71EBF1DD182CDDC200C619EE /* MessageUI.framework */,
 				712C5C8C181514BA00940AB6 /* libz.1.2.5.dylib */,

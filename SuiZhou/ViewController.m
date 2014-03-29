@@ -27,11 +27,14 @@
     {
         self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"start.png"]] ;
     }
+
+
     
     timer = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(timePush) userInfo:nil repeats:YES];
 }
 -(void)timePush
 {
+
     [timer invalidate];
     HomeViewController *home = [[HomeViewController alloc]init];
     [self.navigationController pushViewController:home animated:YES];

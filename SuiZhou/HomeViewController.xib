@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4510" systemVersion="12E55" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
         <deployment defaultVersion="1536" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3742"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HomeViewController">
@@ -14,6 +14,7 @@
                 <outlet property="ScrollView" destination="116" id="119"/>
                 <outlet property="ThreeView" destination="65" id="122"/>
                 <outlet property="TwoView" destination="64" id="121"/>
+                <outlet property="bgView" destination="ain-TV-iBd" id="eRM-vq-olq"/>
                 <outlet property="view" destination="1" id="3"/>
             </connections>
         </placeholder>
@@ -41,7 +42,7 @@
                                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
                                     <connections>
-                                        <action selector="button:" destination="-1" eventType="touchUpInside" id="58"/>
+                                        <action selector="siteBtn:" destination="-1" eventType="touchUpInside" id="9vb-iK-RXs"/>
                                     </connections>
                                 </button>
                             </barButtonItem>
@@ -59,7 +60,7 @@
                             <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <subviews>
-                                <view contentMode="scaleToFill" id="66">
+                                <view hidden="YES" contentMode="scaleToFill" id="66">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <subviews>
@@ -263,7 +264,7 @@
                                         </label>
                                     </subviews>
                                 </view>
-                                <view contentMode="scaleToFill" id="64">
+                                <view hidden="YES" contentMode="scaleToFill" id="64">
                                     <rect key="frame" x="320" y="0.0" width="320" height="504"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <subviews>
@@ -467,7 +468,7 @@
                                         </label>
                                     </subviews>
                                 </view>
-                                <view contentMode="scaleToFill" id="65">
+                                <view hidden="YES" contentMode="scaleToFill" id="65">
                                     <rect key="frame" x="640" y="0.0" width="320" height="504"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <subviews>
@@ -573,6 +574,12 @@
                     <rect key="frame" x="135" y="425" width="50" height="36"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </pageControl>
+                <view hidden="YES" contentMode="scaleToFill" id="ain-TV-iBd">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
+                </view>
             </subviews>
             <color key="backgroundColor" red="1" green="0.32279161070000001" blue="0.28423996480000002" alpha="1" colorSpace="calibratedRGB"/>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>

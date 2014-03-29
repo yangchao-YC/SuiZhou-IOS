@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ASIHTTPRequest.h"
 
-@interface ViewController : UIViewController
+@interface ViewController : UIViewController<ASIHTTPRequestDelegate>
 {
     NSTimer *timer;
 }

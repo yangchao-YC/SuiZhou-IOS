@@ -17,12 +17,20 @@
 #import "WebViewController.h"
 #import "TableViewController.h"
 #import "FMDatabase.h"
-
+#import "MBProgressHUD.h"
+#import "UIViewController+HUD.h"
 #define DB_NAME @"suizhouData.db"
 #define TABLE_NAME @"suizhou"
 #define DB_PATH [NSSearchPathForDirectoriesInDomains( NSDocumentDirectory, NSUserDomainMask, YES) lastObject]
 
 @interface HomeViewController ()
+{
+    int pageSum;
+    NSString* phoneModel;
+    NSString *UUIDString;
+}
+
+@property(nonatomic,retain)NSMutableArray * articles;
 
 @end
 
@@ -63,8 +71,55 @@
 {
     [super viewDidLoad];
 
-    [self initDB];
+    if (IS_IPHONE_5) {
+        self.bgView.frame = CGRectMake(0, 0, 320, 480 + 88);
+        self.bgView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"start5.png"]] ;
+    }
+    else
+    {
+        self.bgView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"start.png"]] ;
+    }
     
+
+    
+    //phoneModel = [phoneModel stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    
+    
+    
+   // NSLog(@"%@",phoneModel);
+    
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    NSInteger myInt = [user integerForKey:@"myint"];
+    if (myInt !=1) {//判断是否注册，注册则不进行用户统计
+       
+        
+        phoneModel = [[UIDevice currentDevice] localizedModel];//获取国际化名称
+        UUIDString = [[[UIDevice currentDevice] identifierForVendor] UUIDString];//获取设备ID
+        
+        UUIDString = [UUIDString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        UUIDString = [UUIDString stringByReplacingOccurrencesOfString:@" " withString:@""];
+        
+        phoneModel = [phoneModel stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];//去掉左右空格
+        phoneModel = [phoneModel stringByReplacingOccurrencesOfString:@" " withString:@""];//去掉中间空格
+        
+        [user setInteger:1 forKey:@"myint"];
+        [user setObject:phoneModel forKey:@"phoneModel"];
+        [user setObject:UUIDString forKey:@"UUIDString"];
+        
+        NSString *date  = [NSString stringWithFormat:@"http://121.199.29.181/demo/joomla/suizhou/index.php?option=com_content&view=category&layout=blog&sbid=%@&sbxh=%@&statez=4",UUIDString,phoneModel];
+        NSURL *dateURL = [[NSURL alloc]initWithString:date];
+        MyASIHTTPRequest *request = [MyASIHTTPRequest requestWithURL:dateURL];
+        request.key = 1;
+        [request setDelegate:self];
+        [request startAsynchronous];
+        
+    }
+    
+    phoneModel = [user stringForKey:@"phoneModel"];
+    UUIDString = [user stringForKey:@"UUIDString"];
+    
+    [self initDB];
+
     self.navigationController.navigationBar.translucent = NO;
     //隐藏自带导航条
     [self.navigationController setNavigationBarHidden:YES];
@@ -79,8 +134,6 @@
     {
         [self.HomeBgView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"home_bg.png"]]];
     }
-    
-    
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0) {
         _NavBar.frame = CGRectMake(0, 20, 320, 44);
         self.HomeBgView.frame = CGRectMake(0, 64, 320, 436 + DISTANCE);
@@ -100,18 +153,135 @@
     }
     
     
+    // Do any additional setup after loading the view from its nib.
+    
+    
+    NSString *date  = [NSString stringWithFormat:@"http://121.199.29.181/demo/joomla/suizhou/index.php?option=com_content&view=category&layout=blog&id=1&statez=1&userid=%@&model=%@",UUIDString,phoneModel];
+    NSURL *dateURL = [[NSURL alloc]initWithString:date];
+    MyASIHTTPRequest *request = [MyASIHTTPRequest requestWithURL:dateURL];
+    request.key = 2;
+    [request setDelegate:self];
+    [request startAsynchronous];
+}
+
+
+
+
+-(void)requestFinished:(ASIHTTPRequest *)request
+{
+    MyASIHTTPRequest *myhttp = (MyASIHTTPRequest *)request;
+    NSError *error;
+    id rs = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingAllowFragments error:&error];
+    
+    switch (myhttp.key) {
+        case 1:
+            NSLog(@"%@",rs);
+            break;
+        case 2:
+          //  [self removeHUDInfo];
+            self.articles = rs;
+            [self Calculate:self.articles.count];
+            break;
+        case 3:
+
+            break;
+        default:
+            break;
+    }
+}
+
+-(void)requestFailed:(ASIHTTPRequest *)request
+{
+   // [self removeHUDInfo];
+    
+    NSLog(@"出错");
+
+}
+//计算需产生的总页数
+-(void)Calculate:(int)page
+{
+    pageSum = (page/9) + (page%9!=0 ? 1:0);
+    [self newScrollView:(page%9)];
+}
+
+/*
+ remain:接收余数（最后一页Button的个数）
+ */
+-(void)newScrollView:(int)remain
+{
     //设置scrollView滑动范围
-    [self.ScrollView setContentSize:CGSizeMake(960, 416)];
+    [self.ScrollView setContentSize:CGSizeMake(320*pageSum, 416)];
     self.ScrollView.pagingEnabled = YES;
     self.ScrollView.bounces = NO;//去掉翻页中白屏
     [self.ScrollView setDelegate:self];
     self.ScrollView.showsHorizontalScrollIndicator = NO;//不实现水平滚到条
-    self.PageContol.numberOfPages = 3;//设置PAGE个数
+    self.PageContol.numberOfPages = pageSum;//设置PAGE个数
     self.PageContol.currentPage = 0;
     [self.PageContol addTarget:self action:@selector(pageTurn:) forControlEvents:UIControlEventValueChanged];
     
-    // Do any additional setup after loading the view from its nib.
+    [self newView:remain];
+  
 }
+
+//创建每页的view
+-(void)newView:(int)remain
+{
+    for (int i = 0; i<pageSum; i++) {
+        UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0+(i *320), 0, 320, 504)];
+        view.backgroundColor = [UIColor clearColor];
+        [self.ScrollView addSubview:view];
+        [self newBtnView:i View:view Remain:remain];
+    }
+}
+//创建单个button的容器
+-(void)newBtnView:(int)page View:(UIView *)view Remain:(int)remain
+{
+    
+    int count = 9;//控制button总数
+    if (page == (pageSum - 1)) {
+        count = remain;
+    }
+    
+    int wrap = 0;//控制左边距
+    int line = 0;//控制换行
+    for (int rise = 0; rise<count; rise++) {
+        UIView *IntervalView = [[UIView alloc]initWithFrame:CGRectMake(20 + (wrap*105), 20 + (line *108) , 70, 71)];
+        [view addSubview:IntervalView];
+        wrap ++;
+        
+        if (wrap == 3) {
+            wrap =0;
+            line ++;
+        }
+        
+        
+        [self newBtn:(rise +(page *9)) View:IntervalView];
+    }
+}
+//创建button
+-(void)newBtn:(int)tag View:(UIView *)view
+{
+    NSDictionary *dic = [self.articles objectAtIndex:tag];
+    
+    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+    btn.frame = CGRectMake(0, 0, 70, 63);
+    
+   // btn.imageView.image = [UIImage imageNamed:@"home_view1_1.png"];
+    [btn setImage:[UIImage imageNamed:@"home_view1_1.png"] forState:UIControlStateNormal];
+    [btn addTarget:self action:@selector(button:) forControlEvents:UIControlEventTouchUpInside];
+    btn.tag = tag;
+    [view addSubview:btn];
+    
+    UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(0, 67, 70, 13)];
+    label.font = [UIFont fontWithName:@"ARIAL" size:11];
+    label.textAlignment = NSTextAlignmentCenter;
+    [label setNumberOfLines:2];
+    label.textColor = [UIColor whiteColor];
+    label.text = [dic objectForKey:@"title"];
+    [view addSubview:label];
+    
+}
+
 //scrollView回调，设置pagecontil显示
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView1{
     CGPoint offset=scrollView1.contentOffset;
@@ -126,11 +296,30 @@
 }
 
 
+
+-(IBAction)siteBtn:(id)sender
+{
+    [self sitePush];
+}
 /*
- 建议后期更改为直接获取服务器数据，动态生成button
+stype5中状态 
+ 1.list     进入列表
+ 2.weblist  进入列表后进入网页访问
+ 3.unfinished   进入正在开发中页面
+ 4.aboutus  进入关于本应用页面
+ 5.weblink  直接进入网页显示页面，此页面跳转时需提取参数  metakey  获取访问的地址
  */
 -(IBAction)button:(UIButton *)sender
 {
+    
+    NSLog(@"%d",sender.tag);
+    NSDictionary *dic = [self.articles objectAtIndex:sender.tag];
+    
+    NSString *Stype = [dic objectForKey:@"stype"];
+    NSString *Url = [dic objectForKey:@"zcategoryurl"];
+    NSString *Title = [dic objectForKey:@"title"];
+    
+    /*
     NSString *navBarText = sender.titleLabel.text;
     NSString *webYes = @"yes";//区分是否为直接下级至网页页面，yes则是
     NSString *webNo = @"no";
@@ -209,7 +398,7 @@
             [self TablePush:navBarText:webNo:@"http://121.199.29.181/demo/joomla/suizhou/index.php?option=com_content&view=category&layout=blog&id=86&statez=1" tag:sender.tag];
             break;
     }
-    
+    */
 }
 /*
  以下为页面跳转方法
@@ -272,6 +461,7 @@
     [_PageContol release];
     [_TwoView release];
     [_ThreeView release];
+    [_bgView release];
     [super dealloc];
 }
 - (void)viewDidUnload {

@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@interface HomeViewController : UIViewController<UIScrollViewDelegate>
+#import "MyASIHTTPRequest.h"
+@interface HomeViewController : UIViewController<UIScrollViewDelegate,ASIHTTPRequestDelegate>
 {
     NSArray * urlString;
 }
@@ -19,5 +19,6 @@
 @property (retain, nonatomic) IBOutlet UIScrollView *ScrollView;
 @property (retain, nonatomic) IBOutlet UIPageControl *PageContol;
 @property (retain, nonatomic) IBOutlet UIView *HomeBgView;
+@property (retain, nonatomic) IBOutlet UIView *bgView;
 
 @end
