@@ -10,6 +10,7 @@
 
 #import "ViewController.h"
 #import "HomeViewController.h"
+#import "UMSocial.h"
 @implementation AppDelegate
 
 - (void)dealloc
@@ -21,6 +22,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [UMSocialData setAppKey:@"507fcab25270157b37000010"];
+    
     
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     // Override point for customization after application launch.

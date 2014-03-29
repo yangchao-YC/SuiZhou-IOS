@@ -276,6 +276,7 @@
     label.font = [UIFont fontWithName:@"ARIAL" size:11];
     label.textAlignment = NSTextAlignmentCenter;
     [label setNumberOfLines:2];
+    label.backgroundColor = [UIColor clearColor];
     label.textColor = [UIColor whiteColor];
     label.text = [dic objectForKey:@"title"];
     [view addSubview:label];

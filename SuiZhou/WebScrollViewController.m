@@ -9,7 +9,7 @@
 #import "WebScrollViewController.h"
 #import "base64.h"
 #import "ArticleVO.h"
-
+#import "UMSocial.h"
 @interface WebScrollViewController ()
 
 @end
@@ -45,10 +45,10 @@
     self.ScrollView.pagingEnabled = YES;
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0)
     {
+        self.navBar.frame = CGRectMake(0, 20, 320, 64);
+        self.navLabel.frame = CGRectMake(53, 31, 204, 21);
+        self.backButton.frame=CGRectMake(5, 27, 40, 30);
         if (IS_IPHONE_5) {
-            self.navBar.frame = CGRectMake(0, 20, 320, 64);
-            self.navLabel.frame = CGRectMake(53, 31, 204, 21);
-            self.backButton.frame=CGRectMake(5, 27, 40, 30);
             self.ScrollView.frame = CGRectMake(0, -22, 320, 392 + DISTANCE);
             self.buttomBar.frame = CGRectMake(0, 436 + DISTANCE, 320, 44);
             self.bottomButton1.frame = CGRectMake(30, 445 + DISTANCE, 25, 25);//刷新按钮
@@ -58,7 +58,8 @@
         }
         else
         {
-            self.ScrollView.frame = CGRectMake(0, 45, 320, 392);
+            
+            self.ScrollView.frame = CGRectMake(0, 65, 320, 392);
             self.buttomBar.frame = CGRectMake(0, 436 + DISTANCE, 320, 44);
             self.bottomButton1.frame = CGRectMake(30, 445 + DISTANCE, 25, 25);//刷新按钮
             self.bottomButton4.frame = CGRectMake(258, 445 + DISTANCE, 25, 25);//分享按钮
@@ -234,9 +235,11 @@
     NSDictionary *article = [_data objectAtIndex:mark];
     //加载本地模版
     NSString *title = [article objectForKey:@"title"];
-    NSString *yy = [article objectForKey:@"introtext"];
+    NSString *yy = @"";//[article objectForKey:@"introtext"];
     NSString *base = [base64 decodeBase64String:yy];
      NSLog(@"-开始刷新--%@-------",base);
+    base = [self flattenHTML:base];
+    
     if ([MFMailComposeViewController canSendMail]) {
         MFMailComposeViewController * mailC = [[MFMailComposeViewController alloc]init];
         mailC.mailComposeDelegate = self;
@@ -255,7 +258,41 @@
        [alert release];
    }
     
+    /*
+    [UMSocialSnsService presentSnsIconSheetView:self
+                                         appKey:@"507fcab25270157b37000010"
+                                      shareText:base
+                                     shareImage:nil
+                                shareToSnsNames:[NSArray arrayWithObjects:UMShareToSms,UMShareToEmail,nil]
+                                       delegate:nil];
+    */
+    
 }
+
+
+- (NSString *)flattenHTML:(NSString *)html {
+    
+    NSScanner *theScanner;
+    NSString *text = nil;
+    
+    theScanner = [NSScanner scannerWithString:html];
+    
+    while ([theScanner isAtEnd] == NO) {
+        // find start of tag
+        [theScanner scanUpToString:@"<" intoString:NULL] ;
+        // find end of tag
+        [theScanner scanUpToString:@">" intoString:&text] ;
+        // replace the found tag with a space
+        //(you can filter multi-spaces out later if you wish)
+        html = [html stringByReplacingOccurrencesOfString:
+                [NSString stringWithFormat:@"%@>", text]
+                                               withString:@""];
+    } // while //
+    
+    NSLog(@"-----===%@",html);
+    return html;
+}
+
 
 //发送邮件回调方法，此时为返回界面
 -(void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error

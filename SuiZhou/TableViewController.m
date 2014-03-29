@@ -77,15 +77,15 @@
     self.pullTableView.frame = CGRectMake(0, 46, 320, 414 + DISTANCE);
     
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0) {
+        self.navBar.frame = CGRectMake(0, 20, 320, 44);
+        self.navLabel.frame = CGRectMake(53, 31, 204, 21);
+         self.backButton.frame=CGRectMake(5, 27, 40, 30);
         if (IS_IPHONE_5) {
-            self.navBar.frame = CGRectMake(0, 20, 320, 44);
-            self.navLabel.frame = CGRectMake(53, 31, 204, 21);
             self.pullTableView.frame = CGRectMake(0, 66, 320, 328 + DISTANCE);
-            self.backButton.frame=CGRectMake(5, 27, 40, 30);
         }
         else
         {
-            self.pullTableView.frame = CGRectMake(0, 44, 320, 436);
+            self.pullTableView.frame = CGRectMake(0, 66, 320, 416);
         }
         
     }
