@@ -486,7 +486,7 @@
 //文章统计
 -(void)Articlecount:(NSString *)key
 {
-    NSString *URL = [NSString stringWithFormat:@"http://121.199.29.181/demo/joomla/suizhou/index.php?option=com_content&view=category&layout=blog&aid=%@&statez=3",key];
+    NSString *URL = [NSString stringWithFormat:@"http://119.36.193.147/index.php?option=com_content&view=category&layout=blog&aid=%@&statez=3",key];
     
     NSURL *dateURL = [[[NSURL alloc]initWithString:URL]autorelease];
     self.request = [MyASIHTTPRequest requestWithURL:dateURL];

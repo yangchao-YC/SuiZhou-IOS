@@ -28,6 +28,7 @@
     int pageSum;
     NSString* phoneModel;
     NSString *UUIDString;
+    NSMutableArray *ImageArray;
 }
 
 @property(nonatomic,retain)NSMutableArray * articles;
@@ -80,11 +81,7 @@
         self.bgView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"start.png"]] ;
     }
     
-
-    
     //phoneModel = [phoneModel stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    
-    
     
    // NSLog(@"%@",phoneModel);
     
@@ -92,7 +89,6 @@
     NSInteger myInt = [user integerForKey:@"myint"];
     if (myInt !=1) {//判断是否注册，注册则不进行用户统计
        
-        
         phoneModel = [[UIDevice currentDevice] localizedModel];//获取国际化名称
         UUIDString = [[[UIDevice currentDevice] identifierForVendor] UUIDString];//获取设备ID
         
@@ -106,7 +102,7 @@
         [user setObject:phoneModel forKey:@"phoneModel"];
         [user setObject:UUIDString forKey:@"UUIDString"];
         
-        NSString *date  = [NSString stringWithFormat:@"http://121.199.29.181/demo/joomla/suizhou/index.php?option=com_content&view=category&layout=blog&sbid=%@&sbxh=%@&statez=4",UUIDString,phoneModel];
+        NSString *date  = [NSString stringWithFormat:@"http://119.36.193.147/index.php?option=com_content&view=category&layout=blog&sbid=%@&sbxh=%@&statez=4",UUIDString,phoneModel];
         NSURL *dateURL = [[NSURL alloc]initWithString:date];
         MyASIHTTPRequest *request = [MyASIHTTPRequest requestWithURL:dateURL];
         request.key = 1;
@@ -156,7 +152,7 @@
     // Do any additional setup after loading the view from its nib.
     
     
-    NSString *date  = [NSString stringWithFormat:@"http://121.199.29.181/demo/joomla/suizhou/index.php?option=com_content&view=category&layout=blog&id=1&statez=1&userid=%@&model=%@",UUIDString,phoneModel];
+    NSString *date  = [NSString stringWithFormat:@"http://119.36.193.147/index.php?option=com_content&view=category&layout=blog&id=1&statez=1&userid=%@&model=%@",UUIDString,phoneModel];
     NSURL *dateURL = [[NSURL alloc]initWithString:date];
     MyASIHTTPRequest *request = [MyASIHTTPRequest requestWithURL:dateURL];
     request.key = 2;
@@ -180,7 +176,8 @@
         case 2:
           //  [self removeHUDInfo];
             self.articles = rs;
-            [self Calculate:self.articles.count];
+           // [self Calculate:self.articles.count];
+            [self getImage];
             break;
         case 3:
 
@@ -196,6 +193,23 @@
     
     NSLog(@"出错");
 
+}
+
+-(void)getImage
+{
+    ImageArray = [NSMutableArray array];
+    for (int i = 0; i<self.articles.count; i++) {
+    
+    NSDictionary *dic = [self.articles objectAtIndex:i];
+    
+    NSData *date = [NSData dataWithContentsOfURL:[NSURL URLWithString:[dic objectForKey:@"cnparams"]]];
+    UIImage *image = [UIImage imageWithData:date];
+    [ImageArray addObject:image];
+    }
+    
+    [self Calculate:self.articles.count];
+
+    
 }
 //计算需产生的总页数
 -(void)Calculate:(int)page
@@ -232,6 +246,13 @@
         [self.ScrollView addSubview:view];
         [self newBtnView:i View:view Remain:remain];
     }
+    
+    
+    [UIView animateWithDuration:2 animations:^{
+        self.bgView.frame = CGRectMake(-320, 0, 320, 480 + DISTANCE);
+    }];
+    
+    
 }
 //创建单个button的容器
 -(void)newBtnView:(int)page View:(UIView *)view Remain:(int)remain
@@ -267,7 +288,7 @@
     btn.frame = CGRectMake(0, 0, 70, 63);
     
    // btn.imageView.image = [UIImage imageNamed:@"home_view1_1.png"];
-    [btn setImage:[UIImage imageNamed:@"home_view1_1.png"] forState:UIControlStateNormal];
+    [btn setImage:[ImageArray objectAtIndex:tag] forState:UIControlStateNormal];
     [btn addTarget:self action:@selector(button:) forControlEvents:UIControlEventTouchUpInside];
     btn.tag = tag;
     [view addSubview:btn];

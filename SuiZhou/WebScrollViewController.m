@@ -9,7 +9,6 @@
 #import "WebScrollViewController.h"
 #import "base64.h"
 #import "ArticleVO.h"
-#import "UMSocial.h"
 @interface WebScrollViewController ()
 
 @end
@@ -232,10 +231,10 @@
 //发送邮件方法，调用系统邮件，设置标题及内容，用户自己输入收件人进行发送邮件，因为内容为html格式，所以此时设置的是支持html的发送格式
 -(void)main
 {
-    NSDictionary *article = [_data objectAtIndex:mark];
+    ArticleVO *article = [_data objectAtIndex:mark];
     //加载本地模版
-    NSString *title = [article objectForKey:@"title"];
-    NSString *yy = @"";//[article objectForKey:@"introtext"];
+    NSString *title = article.title;
+    NSString *yy = article.introtext;
     NSString *base = [base64 decodeBase64String:yy];
      NSLog(@"-开始刷新--%@-------",base);
     base = [self flattenHTML:base];

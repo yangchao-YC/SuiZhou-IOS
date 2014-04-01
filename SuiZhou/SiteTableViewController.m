@@ -42,7 +42,7 @@
         self.tableView.frame = CGRectMake(0, 64, 320, 416 + DISTANCE);
     }
     //与后台约定的检测更新地址
-    NSString *url = @"http://121.199.29.181/demo/joomla/suizhou/index.php?option=com_content&view=category&layout=blog&id=155&statez=1";
+    NSString *url = @"http://119.36.193.147/index.php?option=com_content&view=category&layout=blog&id=155&statez=1";
     NSURL *dateURL = [[[NSURL alloc]initWithString:url]autorelease];
     //使用第三方包获取网络数据
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:dateURL];
